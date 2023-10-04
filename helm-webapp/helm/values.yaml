@@ -10,3 +10,18 @@ configmap:
 image:
   name: devopsjourney1/mywebapp
   tag: latest
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 1000m
+  hosts:
+    - host: webapp.18.138.178.197.nip.io
+      paths: [/]
