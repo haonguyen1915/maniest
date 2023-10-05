@@ -26,6 +26,6 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: nginx
 #    kubernetes.io/tls-acme: "true"
-    nginx.ingress.kubernetes.io/proxy-body-size: 1000m
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
   hosts:
     - host: webapp.18.138.178.197.nip.io
