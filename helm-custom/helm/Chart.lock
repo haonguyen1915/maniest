@@ -1,0 +1,6 @@
+dependencies:
+- name: poly
+  repository: file://charts/polylite
+  version: 1.1.0
+digest: sha256:19bddde6a1466792f2a8907e9cc41a1735385a1232ef45bf9180e4dc3b8dad25
+generated: "2023-10-05T13:53:22.151855+07:00"
