@@ -7,8 +7,8 @@ polylite:
   quickConfigs:
 #    registry: "registry.ftech.ai/nlp-va/python-helloworld"
     domain: "python-helloworld.18.138.178.197.nip.io"
-#    healthcheckPath: "/api/v1/health_check"
-    port: 80
+    healthcheckPath: "/api/v1/health_check"
+    port: 8000
   command: []
   runtimeArgs: []
   image:
