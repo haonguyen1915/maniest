@@ -1,0 +1,45 @@
+polylite:
+  enabled: true
+  nameOverride: custom-webapp
+  extraLabels:
+    owner: ai
+    pic: AI.Hao.Nguyen
+  quickConfigs:
+#    registry: "registry.ftech.ai/nlp-va/custom-webapp"
+    domain: "webapp.18.138.178.197.nip.io"
+#    healthcheckPath: "/api/v1/health_check"
+    port: 80
+  command: []
+  runtimeArgs: []
+  image:
+    repository: "devopsjourney1/mywebapp"
+    tag: "latest"
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  probes:
+    livenessProbe:
+      periodSeconds: 15
+      failureThreshold: 30
+      timeoutSeconds: 10
+      initialDelaySeconds: 15
+    readinessProbe:
+      failureThreshold: 30
+      periodSeconds: 15
+      timeoutSeconds: 10
+      initialDelaySeconds: 15
+    startupProbe:
+      timeoutSeconds: 5
+  autoscaling:
+    enabled: false
+  ingress:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: 1000m
+  serviceAccount:
+    create: true
+    name: custom-webapp
+vault: {}
