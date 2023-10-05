@@ -1,106 +1,44 @@
-poly:
-  apps:
-    custom-app:
-      enabled: true
-      global:
-        nameOverride: custom-app
-        extraLabels:
-          owner: ai
-          pic: AI.Hao.Nguyen
-      chart:
-        name: "custom-app"
-        version: "0.0.1"
-      deploy:
-        replicaCount: 1
-      serviceAccount:
-        create: true
-        name: "custom-app"
-        automountServiceAccountToken: false
+polylite:
+  enabled: true
+  nameOverride: custom-webapp
+  extraLabels:
+    owner: ai
+    pic: AI.Hao.Nguyen
+  quickConfigs:
+#    registry: "registry.ftech.ai/nlp-va/custom-webapp"
+    domain: "webapp.18.138.178.197.nip.io"
+#    healthcheckPath: "/api/v1/health_check"
+    port: 80
+#  runtimeArgs: ["uvicorn  app.main:app --port 8000 --host 0.0.0.0 --env-file /vault/secrets/config.env"]
+  image:
+    name: "devopsjourney1/mywebapp"
+    tag: "latest"
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  probes:
+    livenessProbe:
+      periodSeconds: 15
+      failureThreshold: 30
+      timeoutSeconds: 10
+      initialDelaySeconds: 15
+    readinessProbe:
+      failureThreshold: 30
+      periodSeconds: 15
+      timeoutSeconds: 10
+      initialDelaySeconds: 15
+    startupProbe:
+      timeoutSeconds: 5
+  autoscaling:
+    enabled: false
+  ingress:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: 1000m
+  serviceAccount:
+    create: true
+    name: custom-webapp
 
-      image:
-        repository: devopsjourney1/mywebapp
-        tag: "latest"
-#      pod:
-#        podAnnotations:
-#          vault.hashicorp.com/service: "https://vault-raft.prod.ftech.ai"
-        extraLabels:
-          sidecar-injector: enabled
-      container:
-        ports:
-        - containerPort: 80
-
-#        command: ["/bin/sh","-c"]
-#        runtimeArgs: [". /vault/secrets/config.env;uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 1"]
-
-        probes:
-          livenessProbe:
-            httpGet:
-              path: /index
-              port: http
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 6
-          readinessProbe:
-            httpGet:
-              path: /index
-              port: http
-            failureThreshold: 6
-            periodSeconds: 10
-            timeoutSeconds: 5
-          startupProbe:
-            httpGet:
-              path: /index
-              port: http
-            failureThreshold: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-        lifecycle:
-          preStop:
-            exec:
-              command:
-                - /bin/sh
-                - '-c'
-                - sleep 10
-        resources:
-          limits:
-            memory: 2Gi
-          requests:
-            cpu: 300m
-            memory: 256Mi
-      service:
-        enabled: true
-        ports:
-          - name: http
-            port: 80
-            targetPort: 80
-      extraArgs:
-        - --insecure
-      ingress:
-        enabled: true
-        annotations:
-          kubernetes.io/ingress.class: nginx
-          # kubernetes.io/tls-acme: "true"
-          nginx.ingress.kubernetes.io/proxy-body-size: 1000m
-        hosts:
-          - host: webapp.18.138.178.197.nip.io
-
-      autoscaling:
-        enabled: true
-        minReplicas: 2
-        maxReplicas: 2
-#      vault:
-#        enabled: true
-#        annotationValues:
-#          path: "secret/data/projects/nlp-va/custom-app/dev" # vault secret path
-#          authPath: "auth/kubernetes-dev"
-#          role: "nlp-va-custom-app-dev-ro"
-#        template:
-#          type: annotation
-#          fileName: "config.env"
-#          content: |
-#            {{ with secret "secret/data/projects/nlp-va/custom-app/dev" }}
-#            {{- range $key, $value := .Data.data }}
-#            export {{ $key }}={{ $value }}
-#            {{- end }}
-#            {{ end }}
