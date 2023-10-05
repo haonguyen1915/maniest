@@ -1,0 +1,31 @@
+appName: myhelmapp
+
+port: 80
+
+configmap:
+  name: myhelmapp-configmap-v1
+  data:
+    CUSTOM_HEADER: 'This app was deployed with helm!'
+
+image:
+  name: devopsjourney1/mywebapp
+  tag: latest
+
+service:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+
+  extraArgs:
+    - --insecure
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+#    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+  hosts:
+    - host: webapp.18.138.178.197.nip.io
