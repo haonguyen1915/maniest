@@ -11,7 +11,7 @@ polylite:
     port: 80
 #  runtimeArgs: ["uvicorn  app.main:app --port 8000 --host 0.0.0.0 --env-file /vault/secrets/config.env"]
   image:
-    name: "devopsjourney1/mywebapp"
+    repository: "devopsjourney1/mywebapp"
     tag: "latest"
   resources:
     limits:
