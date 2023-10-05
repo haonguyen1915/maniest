@@ -74,6 +74,8 @@ poly:
           - name: http
             port: 80
             targetPort: 80
+      extraArgs:
+        - --insecure
       ingress:
         enabled: true
         annotations:
