@@ -41,4 +41,4 @@ polylite:
   serviceAccount:
     create: true
     name: custom-webapp
-
+vault: {}
